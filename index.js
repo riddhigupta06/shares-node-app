@@ -1,9 +1,13 @@
 const express = require("express");
+const dotenv = require('dotenv')
 const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { UserModel } = require("./models/user.model");
+
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
 
 // create the server
 const app = express();
@@ -13,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // connect to mongo
-mongoose.connect("mongodb://localhost:27017/shares-app");
+mongoose.connect(process.env.MONGODB_CONNECTION);
 
 // register a user endpoint
 app.post("/api/register", async (req, res) => {
@@ -46,7 +50,7 @@ app.post("/api/login", async (req, res) => {
         {
           email: user.email,
         },
-        "secret123",
+        JWT_SECRET,
       );
 
       res.json({ status: "ok", user: token });
@@ -57,6 +61,25 @@ app.post("/api/login", async (req, res) => {
     res.json({ status: "error", user: false });
   }
 });
+
+app.get("/api/validUser", async (req, res) => {
+    const token = req.headers['x-access-token']
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET)
+        const email = decoded.email
+        const user = await UserModel.findOne({ email: email })
+
+        if (user) {
+            res.json({ status: 'ok', user: token })
+        } else {
+            res.json({ status: 'error', user: false })
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.json({ status: 'error', error: 'invalid token' })
+    }
+})
 
 // listen on port 8000
 app.listen(8000, () => {
