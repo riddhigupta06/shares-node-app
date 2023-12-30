@@ -166,13 +166,13 @@ app.post("/api/calculation", async (req, res) => {
 });
 
 // get all the given company's calculations
-app.get("/api/company/calculations", async (req, res) => {
-    const company = await CompanyModel.findOne({ name: req.body.name });
+app.get("/api/company/calculations/:company", async (req, res) => {
+    const company = await CompanyModel.findOne({ name: req.params.company });
     if (!company) {
         res.json({ status: "error", error: "company not found" });
     }
 
-    const calculations = await CompanyModel.find({ company: req.body.company })
+    const calculations = await CalculationModel.find({ company: req.params.company })
     res.json({ status: 'ok', calculations: calculations })
 })
 
