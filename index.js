@@ -4,7 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
 const { UserModel } = require("./models/user.model");
+const calculator = require("./calculate");
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
