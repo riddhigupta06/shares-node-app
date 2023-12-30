@@ -1,13 +1,13 @@
 const express = require("express");
-const dotenv = require('dotenv')
+const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { UserModel } = require("./models/user.model");
 
-dotenv.config()
-const JWT_SECRET = process.env.JWT_SECRET
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // create the server
 const app = express();
@@ -63,23 +63,22 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.get("/api/validUser", async (req, res) => {
-    const token = req.headers['x-access-token']
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET)
-        const email = decoded.email
-        const user = await UserModel.findOne({ email: email })
+  const token = req.headers["x-access-token"];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const email = decoded.email;
+    const user = await UserModel.findOne({ email: email });
 
-        if (user) {
-            res.json({ status: 'ok', user: token })
-        } else {
-            res.json({ status: 'error', user: false })
-        }
-
-    } catch (err) {
-        console.log(err)
-        res.json({ status: 'error', error: 'invalid token' })
+    if (user) {
+      res.json({ status: "ok", user: token });
+    } else {
+      res.json({ status: "error", user: false });
     }
-})
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", error: "invalid token" });
+  }
+});
 
 // listen on port 8000
 app.listen(8000, () => {
