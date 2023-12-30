@@ -15,10 +15,7 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
     parseFloat(pph) - (parseFloat(pph) - parseFloat(ppl)) * 0.382,
   ).toFixed(2);
 
-  let tst = [
-    [null, null, null],
-    [null, null, null],
-  ];
+  let tst = {};
 
   if (jgd1 > jwd2 && jwd1 > jwd2) {
     const values1 = [jgd1, jgd2];
@@ -37,10 +34,12 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values2[0];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, null],
-      [val3, val4, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val4,
+      tst11: val3
+    };
   } else if (jgd1 < jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
@@ -57,10 +56,13 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values1[2];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, val3],
-      [val4, null, null],
-    ];
+    tst = {
+      tst00: val3,
+      tst01: val2,
+      tst02: val1,
+      tst10: val4
+    };
+
   } else if (jgd1 > jwd2 && jwd1 < jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
@@ -70,10 +72,11 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
     const val2 = values[1];
     const val3 = values[3];
 
-    tst = [
-      [val1, val2, null],
-      [val3, null, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val3,
+    };
   }
 
   const valrcnz1 = parseFloat(
@@ -329,7 +332,7 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
     pph: pph,
     ppl: ppl,
     ppc: ppc,
-    tst: tst,
+    ...tst,
     rctv: rctv,
     fctv: fctv,
     rcnz1: valrcnz1,
@@ -400,10 +403,7 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
     parseFloat(pph) - (parseFloat(pph) - parseFloat(ppl)) * 0.382,
   ).toFixed(2);
 
-  let tst = [
-    [null, null, null],
-    [null, null, null],
-  ];
+  let tst = {};
 
   if (jgd1 > jwd2 && jwd1 > jwd2) {
     const values1 = [jgd1, jgd2];
@@ -422,10 +422,12 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values2[0];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, null],
-      [val3, val4, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val4,
+      tst11: val3
+    };
   } else if (jgd1 < jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
@@ -442,10 +444,13 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values1[2];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, val3],
-      [val4, null, null],
-    ];
+    tst = {
+      tst00: val3,
+      tst01: val2,
+      tst02: val1,
+      tst10: val4
+    };
+
   } else if (jgd1 > jwd2 && jwd1 < jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
@@ -455,10 +460,11 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
     const val2 = values[1];
     const val3 = values[3];
 
-    tst = [
-      [val1, val2, null],
-      [val3, null, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val3,
+    };
   }
 
   const valwrcnz1 = parseFloat(
@@ -739,7 +745,7 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
     pph: pph,
     ppl: ppl,
     ppc: ppc,
-    tst: tst,
+    ...tst,
     rctv: wrctv,
     fctv: wfctv,
     rcnz1: valwrcnz1,
@@ -810,10 +816,7 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
     parseFloat(pph) - (parseFloat(pph) - parseFloat(ppl)) * 0.382,
   ).toFixed(2);
 
-  let tst = [
-    [null, null, null],
-    [null, null, null],
-  ];
+  let tst = {};
 
   if (jgd1 > jwd2 && jwd1 > jwd2) {
     const values1 = [jgd1, jgd2];
@@ -832,10 +835,12 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values2[0];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, null],
-      [val3, val4, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val4,
+      tst11: val3
+    };
   } else if (jgd1 < jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
@@ -852,10 +857,13 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
     const val3 = values1[2];
     const val4 = values2[1];
 
-    tst = [
-      [val1, val2, val3],
-      [val4, null, null],
-    ];
+    tst = {
+      tst00: val3,
+      tst01: val2,
+      tst02: val1,
+      tst10: val4
+    };
+
   } else if (jgd1 > jwd2 && jwd1 < jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
@@ -865,10 +873,11 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
     const val2 = values[1];
     const val3 = values[3];
 
-    tst = [
-      [val1, val2, null],
-      [val3, null, null],
-    ];
+    tst = {
+      tst00: val2,
+      tst01: val1,
+      tst10: val3,
+    };
   }
 
   const valmrcnz1 = parseFloat(
@@ -1149,7 +1158,7 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
     pph: pph,
     ppl: ppl,
     ppc: ppc,
-    tst: tst,
+    ...tst,
     rctv: mrctv,
     fctv: mfctv,
     rcnz1: valmrcnz1,
