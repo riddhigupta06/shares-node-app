@@ -129,6 +129,7 @@ app.get("/api/company", async (req, res) => {
   }
 });
 
+// deletes the given company and all of its related data
 app.delete("/api/companies/:company", async (req, res) => {
   const companyName = req.params.company
   try {
@@ -177,6 +178,7 @@ app.post("/api/calculation", async (req, res) => {
     }
 });
 
+// do multiple calculations
 app.post("/api/calculations", async (req, res) => {
 
   let count = 0
@@ -207,7 +209,7 @@ app.post("/api/calculations", async (req, res) => {
         type: calc.type,
         ...data
       });
-      
+
       count += 1
     }
 
@@ -219,6 +221,7 @@ app.post("/api/calculations", async (req, res) => {
   }
 });
 
+// updates the comment for a given calculation
 app.post("/api/comment/:calculationID", async (req, res) => {
   const calculationID = req.params.calculationID
   try {
@@ -232,6 +235,7 @@ app.post("/api/comment/:calculationID", async (req, res) => {
   }
 })
 
+// updates all fields of a given calculation
 app.put("/api/calculation/:calculationID", async (req, res) => {
   const calculationID = req.params.calculationID
 
@@ -264,6 +268,7 @@ app.put("/api/calculation/:calculationID", async (req, res) => {
 
 })
 
+// deletes the given calculation
 app.delete("/api/calculation/:calculationID", async (req, res) => {
   const calculationID = req.params.calculationID
   try {
