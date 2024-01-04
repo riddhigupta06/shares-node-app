@@ -272,9 +272,10 @@ app.put("/api/calculation/:calculationID", async (req, res) => {
 app.delete("/api/calculation/:calculationID", async (req, res) => {
   const calculationID = req.params.calculationID
   try {
-    await CalculationModel.findByIdAndDelete(calculationID)
+    await CalculationModel.findByIdAndDelete({_id: calculationID})
     res.json({ status: 'ok' })
   } catch (err) {
+    console.log(err)
     res.json({ status: 'error', error: err.toString() })
   }
 })
