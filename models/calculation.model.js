@@ -5,7 +5,12 @@ const Calculation = new mongoose.Schema(
     company: { type: String, required: true },
     comment: { type: String },
     date: { type: Date, required: true },
-    type: { type: String, enum: ['daily', 'weekly', 'monthly'], default: 'daily', required: true },
+    type: {
+      type: String,
+      enum: ["daily", "weekly", "monthly"],
+      default: "daily",
+      required: true,
+    },
     ph: { type: Number, required: true },
     pl: { type: Number, required: true },
     pc: { type: Number, required: true },

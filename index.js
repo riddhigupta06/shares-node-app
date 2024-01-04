@@ -100,17 +100,20 @@ app.post("/api/company", async (req, res) => {
 
 // update a company
 app.put("/api/company", async (req, res) => {
-    try {
-      const company = await CompanyModel.findOneAndUpdate({
+  try {
+    const company = await CompanyModel.findOneAndUpdate(
+      {
         name: req.body.name,
-      }, {
-        status: req.body.status
-      });
-      res.json({ status: "ok", company: company });
-    } catch (err) {
-      console.log(err);
-      res.json({ status: "error", error: err.toString() });
-    }
+      },
+      {
+        status: req.body.status,
+      },
+    );
+    res.json({ status: "ok", company: company });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", error: err.toString() });
+  }
 });
 
 // get all companies
@@ -131,90 +134,128 @@ app.get("/api/company", async (req, res) => {
 
 // deletes the given company and all of its related data
 app.delete("/api/companies/:company", async (req, res) => {
-  const companyName = req.params.company
+  const companyName = req.params.company;
   try {
-    await CalculationModel.deleteMany({ company: companyName })
-    await CompanyModel.deleteOne({ name: companyName })
-    res.json({ status: 'ok' })
+    await CalculationModel.deleteMany({ company: companyName });
+    await CompanyModel.deleteOne({ name: companyName });
+    res.json({ status: "ok" });
   } catch (err) {
-    console.log(err)
-    res.json({ status: 'error', error: err.toString()})
+    console.log(err);
+    res.json({ status: "error", error: err.toString() });
   }
-})
+});
 
 // do a calculation given the company, type, date, and 6 values
 // NOTE: company must exist in the db already
 app.post("/api/calculation", async (req, res) => {
+  const company = await CompanyModel.findOne({ name: req.body.company });
+  if (!company) {
+    res.json({ status: "error", error: "company does not exist" });
+  }
 
-    const company = await CompanyModel.findOne({ name: req.body.company })
-    if (!company) {
-        res.json({ status: 'error', error: 'company does not exist' })
-    }
+  let data = {};
 
-    let data = {}
+  if (req.body.type === "daily") {
+    data = calculator.calculateDaily(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else if (req.body.type === "weekly") {
+    data = calculator.calculateWeekly(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else if (req.body.type === "monthly") {
+    data = calculator.calculateMonthly(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else {
+    res.json({ status: "error", error: "invalid calculation type" });
+  }
 
-    if (req.body.type === 'daily') {
-        data = calculator.calculateDaily(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-    } else if (req.body.type === 'weekly') {
-        data = calculator.calculateWeekly(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-    } else if (req.body.type === 'monthly') {
-        data = calculator.calculateMonthly(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-    } else {
-        res.json({ status: 'error', error: 'invalid calculation type' })
-    }
-    
-    try {
-      const calculation = await CalculationModel.create({
-        company: req.body.company,
-        date: new Date(req.body.date),
-        type: req.body.type,
-        ...data
-      });
-      res.json({ status: "ok", calculation: calculation });
-
-    } catch (err) {
-      console.log(err);
-      res.json({ status: "error", error: err.toString() });
-    }
+  try {
+    const calculation = await CalculationModel.create({
+      company: req.body.company,
+      date: new Date(req.body.date),
+      type: req.body.type,
+      ...data,
+    });
+    res.json({ status: "ok", calculation: calculation });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", error: err.toString() });
+  }
 });
 
 // do multiple calculations
 app.post("/api/calculations", async (req, res) => {
-
-  let count = 0
+  let count = 0;
 
   try {
     for (let i = 0; i < req.body.calculations.length; i++) {
-      const calc = req.body.calculations[i]
-      const company = await CompanyModel.findOne({ name: calc.company })
+      const calc = req.body.calculations[i];
+      const company = await CompanyModel.findOne({ name: calc.company });
       if (!company) {
-          continue
+        continue;
       }
 
-      let data = {}
+      let data = {};
 
-      if (calc.type === 'daily') {
-          data = calculator.calculateDaily(calc.ph, calc.pl, calc.pc, calc.pph, calc.ppl, calc.ppc)
-      } else if (calc.type === 'weekly') {
-          data = calculator.calculateWeekly(calc.ph, calc.pl, calc.pc, calc.pph, calc.ppl, calc.ppc)
-      } else if (calc.type === 'monthly') {
-          data = calculator.calculateMonthly(calc.ph, calc.pl, calc.pc, calc.pph, calc.ppl, calc.ppc)
+      if (calc.type === "daily") {
+        data = calculator.calculateDaily(
+          calc.ph,
+          calc.pl,
+          calc.pc,
+          calc.pph,
+          calc.ppl,
+          calc.ppc,
+        );
+      } else if (calc.type === "weekly") {
+        data = calculator.calculateWeekly(
+          calc.ph,
+          calc.pl,
+          calc.pc,
+          calc.pph,
+          calc.ppl,
+          calc.ppc,
+        );
+      } else if (calc.type === "monthly") {
+        data = calculator.calculateMonthly(
+          calc.ph,
+          calc.pl,
+          calc.pc,
+          calc.pph,
+          calc.ppl,
+          calc.ppc,
+        );
       } else {
-          continue
+        continue;
       }
 
       await CalculationModel.create({
         company: calc.company,
         date: new Date(calc.date),
         type: calc.type,
-        ...data
+        ...data,
       });
 
-      count += 1
+      count += 1;
     }
 
-    res.json({ status: 'ok', data: count })
-
+    res.json({ status: "ok", data: count });
   } catch (err) {
     console.log(err);
     res.json({ status: "error", error: err.toString() });
@@ -223,73 +264,100 @@ app.post("/api/calculations", async (req, res) => {
 
 // updates the comment for a given calculation
 app.post("/api/comment/:calculationID", async (req, res) => {
-  const calculationID = req.params.calculationID
+  const calculationID = req.params.calculationID;
   try {
-    const calculation = await CalculationModel.findByIdAndUpdate(calculationID, {
-      comment: req.body.comment
-    })
-    res.json({ status: 'ok', calculation: calculation })
-  } catch (err) {
-    console.log(err)
-    res.json({ status: 'error', error: err.toString() })
-  }
-})
-
-// updates all fields of a given calculation
-app.put("/api/calculation/:calculationID", async (req, res) => {
-  const calculationID = req.params.calculationID
-
-  let data = {}
-
-  if (req.body.type === 'daily') {
-      data = calculator.calculateDaily(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-  } else if (req.body.type === 'weekly') {
-      data = calculator.calculateWeekly(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-  } else if (req.body.type === 'monthly') {
-      data = calculator.calculateMonthly(req.body.ph, req.body.pl, req.body.pc, req.body.pph, req.body.ppl, req.body.ppc)
-  } else {
-      res.json({ status: 'error', error: 'invalid calculation type' })
-  }
-  
-  try {
-    const calculation = await CalculationModel.findByIdAndUpdate(calculationID, {
-      company: req.body.company,
-      comment: req.body.comment,
-      date: new Date(req.body.date),
-      type: req.body.type,
-      ...data
-    });
+    const calculation = await CalculationModel.findByIdAndUpdate(
+      calculationID,
+      {
+        comment: req.body.comment,
+      },
+    );
     res.json({ status: "ok", calculation: calculation });
-
   } catch (err) {
     console.log(err);
     res.json({ status: "error", error: err.toString() });
   }
+});
 
-})
+// updates all fields of a given calculation
+app.put("/api/calculation/:calculationID", async (req, res) => {
+  const calculationID = req.params.calculationID;
+
+  let data = {};
+
+  if (req.body.type === "daily") {
+    data = calculator.calculateDaily(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else if (req.body.type === "weekly") {
+    data = calculator.calculateWeekly(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else if (req.body.type === "monthly") {
+    data = calculator.calculateMonthly(
+      req.body.ph,
+      req.body.pl,
+      req.body.pc,
+      req.body.pph,
+      req.body.ppl,
+      req.body.ppc,
+    );
+  } else {
+    res.json({ status: "error", error: "invalid calculation type" });
+  }
+
+  try {
+    const calculation = await CalculationModel.findByIdAndUpdate(
+      calculationID,
+      {
+        company: req.body.company,
+        comment: req.body.comment,
+        date: new Date(req.body.date),
+        type: req.body.type,
+        ...data,
+      },
+    );
+    res.json({ status: "ok", calculation: calculation });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", error: err.toString() });
+  }
+});
 
 // deletes the given calculation
 app.delete("/api/calculation/:calculationID", async (req, res) => {
-  const calculationID = req.params.calculationID
+  const calculationID = req.params.calculationID;
   try {
-    await CalculationModel.findByIdAndDelete({_id: calculationID})
-    res.json({ status: 'ok' })
+    await CalculationModel.findByIdAndDelete({ _id: calculationID });
+    res.json({ status: "ok" });
   } catch (err) {
-    console.log(err)
-    res.json({ status: 'error', error: err.toString() })
+    console.log(err);
+    res.json({ status: "error", error: err.toString() });
   }
-})
+});
 
 // get all the given company's calculations
 app.get("/api/company/calculations/:company", async (req, res) => {
-    const company = await CompanyModel.findOne({ name: req.params.company });
-    if (!company) {
-        res.json({ status: "error", error: "company not found" });
-    }
+  const company = await CompanyModel.findOne({ name: req.params.company });
+  if (!company) {
+    res.json({ status: "error", error: "company not found" });
+  }
 
-    const calculations = await CalculationModel.find({ company: req.params.company })
-    res.json({ status: 'ok', calculations: calculations })
-})
+  const calculations = await CalculationModel.find({
+    company: req.params.company,
+  });
+  res.json({ status: "ok", calculations: calculations });
+});
 
 // listen on port 8000
 app.listen(8000, () => {
