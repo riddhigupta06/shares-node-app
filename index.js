@@ -203,6 +203,7 @@ app.post("/api/calculation", async (req, res) => {
 // do multiple calculations
 app.post("/api/calculations", async (req, res) => {
   let count = 0;
+  let data = {};
 
   try {
     for (let i = 0; i < req.body.calculations.length; i++) {
@@ -212,7 +213,7 @@ app.post("/api/calculations", async (req, res) => {
         continue;
       }
 
-      let data = {};
+      data = {};
 
       if (calc.type === "daily") {
         data = calculator.calculateDaily(

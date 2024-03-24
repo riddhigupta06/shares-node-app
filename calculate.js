@@ -17,7 +17,7 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
 
   let tst = {};
 
-  if (jgd1 > jwd2 && jwd1 > jwd2) {
+  if (jgd1 >= jwd2 && jwd1 >= jwd2) {
     const values1 = [jgd1, jgd2];
     const values2 = [jwd1, jwd2];
 
@@ -40,7 +40,7 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
       tst10: val4,
       tst11: val3,
     };
-  } else if (jgd1 < jwd2) {
+  } else if (jgd1 <= jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
     values1.sort(function (a, b) {
@@ -62,7 +62,7 @@ const calculateDaily = (ph, pl, pc, pph, ppl, ppc) => {
       tst02: val1,
       tst10: val4,
     };
-  } else if (jgd1 > jwd2 && jwd1 < jwd2) {
+  } else if (jgd1 >= jwd2 && jwd1 <= jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
       return b - a;
@@ -404,7 +404,7 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
 
   let tst = {};
 
-  if (jgd1 > jwd2 && jwd1 > jwd2) {
+  if (jgd1 >= jwd2 && jwd1 >= jwd2) {
     const values1 = [jgd1, jgd2];
     const values2 = [jwd1, jwd2];
 
@@ -427,7 +427,7 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
       tst10: val4,
       tst11: val3,
     };
-  } else if (jgd1 < jwd2) {
+  } else if (jgd1 <= jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
     values1.sort(function (a, b) {
@@ -449,7 +449,7 @@ const calculateWeekly = (ph, pl, pc, pph, ppl, ppc) => {
       tst02: val1,
       tst10: val4,
     };
-  } else if (jgd1 > jwd2 && jwd1 < jwd2) {
+  } else if (jgd1 >= jwd2 && jwd1 <= jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
       return b - a;
@@ -816,7 +816,7 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
 
   let tst = {};
 
-  if (jgd1 > jwd2 && jwd1 > jwd2) {
+  if (jgd1 >= jwd2 && jwd1 >= jwd2) {
     const values1 = [jgd1, jgd2];
     const values2 = [jwd1, jwd2];
 
@@ -839,7 +839,7 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
       tst10: val4,
       tst11: val3,
     };
-  } else if (jgd1 < jwd2) {
+  } else if (jgd1 <= jwd2) {
     const values1 = [jwd1, jwd2, jgd1, jgd2];
     const values2 = [jwd1, jwd2];
     values1.sort(function (a, b) {
@@ -861,7 +861,7 @@ const calculateMonthly = (ph, pl, pc, pph, ppl, ppc) => {
       tst02: val1,
       tst10: val4,
     };
-  } else if (jgd1 > jwd2 && jwd1 < jwd2) {
+  } else if (jgd1 >= jwd2 && jwd1 <= jwd2) {
     const values = [jwd1, jwd2, jgd1, jgd2];
     values.sort(function (a, b) {
       return b - a;
