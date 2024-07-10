@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session")
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -17,7 +18,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const app = express();
 
 // add middleware
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 
 // connect to mongo
