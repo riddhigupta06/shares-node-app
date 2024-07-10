@@ -352,12 +352,12 @@ app.get("/api/company/calculations/:company", async (req, res) => {
   const company = await CompanyModel.findOne({ name: req.params.company });
   if (!company) {
     res.json({ status: "error", error: "company not found" });
+  } else {
+    const calculations = await CalculationModel.find({
+      company: req.params.company,
+    });
+    res.json({ status: "ok", calculations: calculations });
   }
-
-  const calculations = await CalculationModel.find({
-    company: req.params.company,
-  });
-  res.json({ status: "ok", calculations: calculations });
 });
 
 // listen on port 8000
