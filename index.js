@@ -89,7 +89,7 @@ app.get("/api/validUser", async (req, res) => {
 app.post("/api/company", async (req, res) => {
   try {
     const company = await CompanyModel.create({
-      name: req.body.name,
+      name: req.body.name.trim(),
     });
     res.json({ status: "ok", company: company });
   } catch (err) {
