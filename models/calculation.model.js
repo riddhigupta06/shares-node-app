@@ -7,7 +7,7 @@ const Calculation = new mongoose.Schema(
     date: { type: Date, required: true },
     type: {
       type: String,
-      enum: ["daily", "weekly", "monthly"],
+      enum: ["daily", "weekly", "monthly", "quarterly", "half-yearly"],
       default: "daily",
       required: true,
     },

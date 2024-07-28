@@ -173,7 +173,7 @@ app.post("/api/calculation", async (req, res) => {
       req.body.ppl,
       req.body.ppc,
     );
-  } else if (req.body.type === "monthly") {
+  } else if (req.body.type === "monthly" || req.body.type === "quarterly" || req.body.type === "half-yearly") {
     data = calculator.calculateMonthly(
       req.body.ph,
       req.body.pl,
@@ -233,7 +233,7 @@ app.post("/api/calculations", async (req, res) => {
           calc.ppl,
           calc.ppc,
         );
-      } else if (calc.type === "monthly") {
+      } else if (calc.type === "monthly" || calc.type === "quarterly" || req.body.type === "half-yearly") {
         data = calculator.calculateMonthly(
           calc.ph,
           calc.pl,
@@ -304,7 +304,7 @@ app.put("/api/calculation/:calculationID", async (req, res) => {
       req.body.ppl,
       req.body.ppc,
     );
-  } else if (req.body.type === "monthly") {
+  } else if (req.body.type === "monthly" || req.body.type === "quarterly" || req.body.type === "half-yearly") {
     data = calculator.calculateMonthly(
       req.body.ph,
       req.body.pl,
