@@ -233,7 +233,7 @@ app.post("/api/calculations", async (req, res) => {
           calc.ppl,
           calc.ppc,
         );
-      } else if (calc.type === "monthly" || calc.type === "quarterly" || req.body.type === "half-yearly") {
+      } else if (calc.type === "monthly" || calc.type === "quarterly" || calc.type === "half-yearly") {
         data = calculator.calculateMonthly(
           calc.ph,
           calc.pl,
